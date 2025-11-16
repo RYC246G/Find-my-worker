@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_container"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:text="Registration"
+                android:textColor="#333333"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <!-- User Type Switch -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:text="Client"
+                    android:textColor="#333333"
+                    android:textSize="18sp" />
+
+                <Switch
+                    android:id="@+id/switchUserType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Worker"
+                    android:textColor="#333333"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <!-- Email -->
+            <EditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/edit_text"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:padding="16dp" />
+
+            <!-- Password -->
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/edit_text"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="16dp" />
+
+            <!-- Confirm Password -->
+            <EditText
+                android:id="@+id/etConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/edit_text"
+                android:hint="Confirm Password"
+                android:inputType="textPassword"
+                android:padding="16dp" />
+
+            <!-- Name -->
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/edit_text"
+                android:hint="Full Name"
+                android:inputType="textPersonName"
+                android:padding="16dp" />
+
+            <!-- Phone Number -->
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:background="@android:drawable/edit_text"
+                android:hint="Phone Number"
+                android:inputType="phone"
+                android:padding="16dp" />
+
+            <!-- Specialties Container (Initially Hidden) -->
+            <LinearLayout
+                android:id="@+id/layoutSpecialties"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="Specialties (Select all that apply):"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <CheckBox
+                    android:id="@+id/cbGardening"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Gardening"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/cbPaint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Paint"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/cbSmallFixes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Small Fixes"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/cbCleaning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Cleaning"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/cbTransferring"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:padding="8dp"
+                    android:text="Transferring"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <!-- Register Button -->
+            <Button
+                android:id="@+id/btnRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:padding="16dp"
+                android:text="Register"
+                android:textSize="16sp" />
+
+            <!-- Message TextView -->
+            <TextView
+                android:id="@+id/tvMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text=""
+                android:textColor="#FF0000"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
+        <!-- Already have an account button -->
+        <Button
+            android:id="@+id/btnToLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:text="Already have an account? Login"
+            android:textAllCaps="false"
+            android:textColor="#2196F3"
+            android:textSize="14sp" />
+    </LinearLayout>
+</RelativeLayout>

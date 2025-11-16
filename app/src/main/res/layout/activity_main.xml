@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#F5F5F5"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/layoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="32dp"
+        android:gravity="center">
+
+        <!-- Logo/Title Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome Back"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:textColor="#333333"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login to your account"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="40dp"/>
+
+        <!-- Email Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:layout_marginBottom="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eTEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:padding="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Password Input -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/eTPass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:padding="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/btnLoginUser"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Log In"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:backgroundTint="#4CAF50"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Message TextView -->
+        <TextView
+            android:id="@+id/tVMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#DDDDDD"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Register Section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Don't have an account?"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginBottom="8dp"/>
+
+        <Button
+            android:id="@+id/btnToRegister"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Create Account"
+            android:textSize="16sp"
+            android:backgroundTint="#2196F3"
+            android:layout_marginBottom="32dp"/>
+
+        <!-- Update Button (Admin/Debug?) -->
+        <Button
+            android:id="@+id/btnUpdateEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Update Email"
+            android:textSize="14sp"
+            android:backgroundTint="#FF9800"
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"/>
+
+        <!-- ListView -->
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:divider="#EEEEEE"
+            android:dividerHeight="1dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+</ScrollView>

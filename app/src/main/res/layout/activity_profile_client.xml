@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
+
+    <!-- Scrollable Content -->
+    <ScrollView
+        android:id="@+id/scrollContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottomNavigation">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Profile Picture Section -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <!-- Profile Picture (Circular) -->
+                <ImageButton
+                    android:id="@+id/imgProfilePicture"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/circle_background"
+                    android:src="@drawable/ic_default_profile"
+                    android:contentDescription="Profile Picture"/>
+
+                <!-- Edit Profile Picture Icon (Camera overlay) -->
+                <ImageButton
+                    android:id="@+id/btnEditProfilePicture"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignEnd="@id/imgProfilePicture"
+                    android:layout_alignBottom="@id/imgProfilePicture"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:background="@drawable/circle_button_background"
+                    android:src="@drawable/ic_camera"
+                    android:scaleType="center"
+                    android:elevation="4dp"
+                    android:contentDescription="Edit Profile Picture"/>
+
+                <!-- User Name -->
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/imgProfilePicture"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:text="Jane Smith"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333"
+                    android:gravity="center"/>
+            </RelativeLayout>
+
+            <!-- Account Info Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account Information"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Email: user@example.com"
+                android:textSize="16sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Phone: 050-1234567"
+                android:textSize="16sp"
+                android:textColor="#555555"
+                android:layout_marginBottom="24dp"/>
+
+            <!-- Additional Client Info (optional) -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Bookings"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333333"
+                android:layout_marginBottom="12dp"/>
+
+            <TextView
+                android:id="@+id/tvBookingsInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You have no active bookings"
+                android:textSize="16sp"
+                android:textColor="#666666"
+                android:layout_marginBottom="16dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="#FFFFFF"
+        android:elevation="8dp">
+
+        <!-- Home Button -->
+        <LinearLayout
+            android:id="@+id/btnHome"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_home"
+                android:contentDescription="Home"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Home"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <!-- Search Button -->
+        <LinearLayout
+            android:id="@+id/btnSearch"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_search"
+                android:contentDescription="Search"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+        <!-- Chats Button -->
+        <LinearLayout
+            android:id="@+id/btnChats"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_chat"
+                android:contentDescription="Chats"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Chats"
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:layout_marginTop="4dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
