@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark Theme Material 3 Palette -->
+    <color name="primary_dark">#A7C5FF</color>
+    <color name="onPrimary_dark">#003061</color>
+    <color name="primaryContainer_dark">#004689</color>
+    <color name="onPrimaryContainer_dark">#D5E3FF</color>
+    
+    <color name="secondary_dark">#BFC6DC</color>
+    <color name="onSecondary_dark">#293041</color>
+    <color name="secondaryContainer_dark">#3F4759</color>
+    <color name="onSecondaryContainer_dark">#DAE2F9</color>
+    
+    <color name="tertiary_dark">#DBBDE1</color>
+    <color name="onTertiary_dark">#3E2945</color>
+    <color name="tertiaryContainer_dark">#57405D</color>
+    <color name="onTertiaryContainer_dark">#FAD8FD</color>
+
+    <color name="error_dark">#FFB4AB</color>
+    <color name="onError_dark">#690005</color>
+    <color name="errorContainer_dark">#93000A</color>
+    <color name="onErrorContainer_dark">#FFDAD6</color>
+
+    <color name="background_dark">#1A1C1E</color>
+    <color name="onBackground_dark">#E3E2E6</color>
+    <color name="surface_dark">#1A1C1E</color>
+    <color name="onSurface_dark">#E3E2E6</color>
+    <color name="surfaceVariant_dark">#44474E</color>
+    <color name="onSurfaceVariant_dark">#C4C6D0</color>
+    <color name="outline_dark">#8E9099</color>
+</resources>

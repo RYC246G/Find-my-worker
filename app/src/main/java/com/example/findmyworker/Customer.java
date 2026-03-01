@@ -1,22 +1,21 @@
 package com.example.findmyworker;
 
-import static com.example.findmyworker.FBRef.refCustomer;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Customer {
 
     private String userId;
     private String userType;
     private String specialties; //for workers
-    private String fixedLocation; //for workers
+    private double latitude; // for workers
+    private double longitude; // for workers
+    private String address; // for workers
+    private double ranking; // for workers
     private String email;
     private String name;
     private String phone;
-    private String profilePictureUrl; // ← URL string from Firebase Storage
-    private ArrayList<String> portfolioUrls; // ← Array of URL strings
+    private String profilePictureUrl;
+    private ArrayList<String> portfolioUrls;
 
     public Customer() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
@@ -26,21 +25,7 @@ public class Customer {
         this.userId = userId;
         this.userType = userType;
         this.email = email;
-        this.name = null; //not relevant for now
-        this.fixedLocation = null;
-        this.name = null;
-        this.phone = null;
     }
-
-    public Customer(String userId, String userType, String email, String specialties, String name, String phone) {
-        this.userId = userId;
-        this.userType = userType;
-        this.specialties = specialties;
-        this.email = email;
-        this.fixedLocation = null;
-        this.name = name;
-        this.phone = phone;
-    } //used for workers they must have all took down fixed location for now
 
     public ArrayList<String> getPortfolioUrls() {
         return portfolioUrls;
@@ -74,12 +59,36 @@ public class Customer {
         this.specialties = specialties;
     }
 
-    public String getFixedLocation() {
-        return fixedLocation;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setFixedLocation(String fixedLocation) {
-        this.fixedLocation = fixedLocation;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(double ranking) {
+        this.ranking = ranking;
     }
 
     public String getEmail() {

@@ -1,6 +1,5 @@
 package com.example.findmyworker;
 
-
 import static com.example.findmyworker.FBRef.refAuth;
 import static com.example.findmyworker.FBRef.refCustomer;
 
@@ -9,42 +8,55 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    // UI Elements
-    Switch switchUserType;
-    EditText etEmail, etPassword, etConfirmPassword, etName, etPhone;
+    private static final String TAG = "RegisterActivity";
+    private static final int REQUEST_CODE_AUTOCOMPLETE_LOCATION = 1001;
+    private static final String USER_TYPE_WORKER = "worker";
+    private static final String USER_TYPE_CLIENT = "client";
+
+    MaterialButtonToggleGroup toggleUserType;
+    TextInputEditText etEmail, etPassword, etConfirmPassword, etName, etPhone;
     LinearLayout layoutSpecialties;
     CheckBox cbGardening, cbPaint, cbSmallFixes, cbCleaning, cbTransferring;
-    Button btnRegister, btnToLogin;
-    TextView tvMessage;
+    Button btnRegister, btnToLogin, btnSelectLocation;
+    TextView tvMessage, tvSelectedLocation;
 
-    // User type flag
     boolean isWorker = false;
+    double selectedLat = 0.0;
+    double selectedLon = 0.0;
+    String selectedAddress = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        // Initialize UI elements
-        switchUserType = findViewById(R.id.switchUserType);
+        initializeViews();
+        setupListeners();
+        initializePlacesSDK();
+    }
+
+    private void initializeViews() {
+        toggleUserType = findViewById(R.id.toggleUserType);
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         etConfirmPassword = findViewById(R.id.etConfirmPassword);
@@ -59,183 +71,117 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         tvMessage = findViewById(R.id.tvMessage);
         btnToLogin = findViewById(R.id.btnToLogin);
+        btnSelectLocation = findViewById(R.id.btnGetLocation);
+        tvSelectedLocation = findViewById(R.id.tvLocationStatus);
+    }
 
-        // Set switch listener to show/hide specialties
-        switchUserType.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isWorker = isChecked;
+    private void initializePlacesSDK() {
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), getString(R.string.MAPS_API_KEY));
+        }
+    }
 
-                if (isChecked) {
-                    // Show specialties for Worker
-                    layoutSpecialties.setVisibility(View.VISIBLE);
-                } else {
-                    // Hide specialties for Client
-                    layoutSpecialties.setVisibility(View.GONE);
-                    // Uncheck all boxes when hiding
-                    clearCheckboxes();
-                }
+    private void setupListeners() {
+        toggleUserType.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (isChecked) {
+                isWorker = (checkedId == R.id.btnTypeWorker);
+                layoutSpecialties.setVisibility(isWorker ? View.VISIBLE : View.GONE);
+                if (!isWorker) clearCheckboxes();
             }
         });
 
-        // Set button click listener
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                registerUser();
-            }
-        });
+        btnSelectLocation.setOnClickListener(v -> launchPlacesAutocomplete());
+        btnRegister.setOnClickListener(v -> registerUser());
+        btnToLogin.setOnClickListener(v -> finish());
+    }
 
-        btnToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
+    private void launchPlacesAutocomplete() {
+        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS);
+        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields).build(this);
+        startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE_LOCATION);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK || data == null) return;
+
+        if (requestCode == REQUEST_CODE_AUTOCOMPLETE_LOCATION) {
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            if (place.getLatLng() != null && place.getAddress() != null) {
+                selectedLat = place.getLatLng().latitude;
+                selectedLon = place.getLatLng().longitude;
+                selectedAddress = place.getAddress();
+                tvSelectedLocation.setText("Location: " + selectedAddress);
             }
-        });
+        }
     }
 
     private void registerUser() {
-        // Get input values
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirmPassword = etConfirmPassword.getText().toString().trim();
         String name = etName.getText().toString().trim();
         String phone = etPhone.getText().toString().trim();
 
-        // Validate inputs
-        if (email.isEmpty()) {
-            tvMessage.setText("Please enter email");
+        // 1. Password length validation (Max 20 chars)
+        if (password.length() > 20) {
+            tvMessage.setText("Password cannot exceed 20 characters.");
             return;
         }
 
-
-        if (password.isEmpty()) {
-            tvMessage.setText("Please enter password");
+        // 2. Name validation: Max 20 chars AND letters/spaces only using Regex
+        if (name.length() > 20) {
+            tvMessage.setText("Name cannot exceed 20 characters.");
+            return;
+        }
+        if (!name.matches("^[a-zA-Z\\s]+$")) {
+            tvMessage.setText("Name can only contain letters.");
             return;
         }
 
-        if (password.length() < 6) {
-            tvMessage.setText("Password must be at least 6 characters");
+        // 3. Basic empty field and password match validation
+        if (email.isEmpty() || password.isEmpty() || !password.equals(confirmPassword)) {
+            tvMessage.setText("Please check empty fields and ensure passwords match.");
             return;
         }
 
-        if (!password.equals(confirmPassword)) {
-            tvMessage.setText("Passwords do not match");
-            return;
-        }
-
-        if (name.isEmpty()) {
-            tvMessage.setText("Please enter your name");
-            return;
-        }
-
-        if (phone.isEmpty()) {
-            tvMessage.setText("Please enter phone number");
-            return;
-        }
-        if (!isValidIsraeliPhone(phone)) {
-            tvMessage.setText("Please enter a valid Israeli phone number");
-            return;
-        }
-
-        // If worker, validate specialties
-        if (isWorker) {
-            if (!cbGardening.isChecked() && !cbPaint.isChecked() &&
-                    !cbSmallFixes.isChecked() && !cbCleaning.isChecked() &&
-                    !cbTransferring.isChecked()) {
-                tvMessage.setText("Please select at least one specialty");
-                return;
-            }
-        }
-
-        // Disable button to prevent multiple clicks
         btnRegister.setEnabled(false);
         tvMessage.setText("Registering...");
 
-        // Create user in Firebase Authentication
-        refAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Get user ID
-                            String userId = refAuth.getCurrentUser().getUid();
+        refAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                String userId = refAuth.getCurrentUser().getUid();
+                Customer newUser = new Customer();
+                newUser.setUserId(userId);
+                newUser.setEmail(email);
+                newUser.setName(name);
+                newUser.setPhone(phone);
+                newUser.setUserType(isWorker ? USER_TYPE_WORKER : USER_TYPE_CLIENT);
 
-                            // Create Customer object
-                            Customer newUser = new Customer();
-                            newUser.setUserId(userId);
-                            newUser.setEmail(email);
-                            newUser.setName(name);
-                            newUser.setPhone(phone);
+                if (isWorker) {
+                    newUser.setLatitude(selectedLat);
+                    newUser.setLongitude(selectedLon);
+                    newUser.setAddress(selectedAddress);
 
-                            // Set user type
-                            if (isWorker) {
-                                newUser.setUserType("worker");
+                    ArrayList<String> specs = new ArrayList<>();
+                    if (cbGardening.isChecked()) specs.add("Gardening");
+                    if (cbPaint.isChecked()) specs.add("Paint");
+                    if (cbSmallFixes.isChecked()) specs.add("Small Fixes");
+                    if (cbCleaning.isChecked()) specs.add("Cleaning");
+                    if (cbTransferring.isChecked()) specs.add("Transferring");
+                    newUser.setSpecialties(String.join(", ", specs));
+                }
 
-                                // Get selected specialties
-                                ArrayList<String> selectedSpecialties = new ArrayList<>();
-                                if (cbGardening.isChecked()) selectedSpecialties.add("Gardening");
-                                if (cbPaint.isChecked()) selectedSpecialties.add("Paint");
-                                if (cbSmallFixes.isChecked()) selectedSpecialties.add("Small Fixes");
-                                if (cbCleaning.isChecked()) selectedSpecialties.add("Cleaning");
-                                if (cbTransferring.isChecked()) selectedSpecialties.add("Transfering");
-
-                                // Convert to comma-separated string
-                                String specialties = String.join(", ", selectedSpecialties);
-                                newUser.setSpecialties(specialties);
-                            } else {
-                                newUser.setUserType("client");
-                            }
-
-                            // Save to Firebase Realtime Database
-                            refCustomer.child(userId).setValue(newUser)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            btnRegister.setEnabled(true);
-
-                                            if (task.isSuccessful()) {
-                                                String userTypeText = isWorker ? "Worker" : "Client";
-                                                tvMessage.setText("Registration successful!");
-                                                Toast.makeText(RegisterActivity.this,
-                                                        "Welcome " + name + " (" + userTypeText + ")!",
-                                                        Toast.LENGTH_SHORT).show();
-
-                                                // Clear fields
-                                                clearFields();
-
-                                                // Optional: Navigate based on user type
-                                                // if (isWorker) {
-                                                //     Intent intent = new Intent(RegisterActivity.this, WorkerMainActivity.class);
-                                                //     startActivity(intent);
-                                                // } else {
-                                                //     Intent intent = new Intent(RegisterActivity.this, ClientMainActivity.class);
-                                                //     startActivity(intent);
-                                                // }
-                                                // finish();
-                                            } else {
-                                                tvMessage.setText("Failed to save user data: " +
-                                                        task.getException().getMessage());
-                                            }
-                                        }
-                                    });
-                        } else {
-                            btnRegister.setEnabled(true);
-                            tvMessage.setText("Registration failed: " +
-                                    task.getException().getMessage());
-                        }
-                    }
+                refCustomer.child(userId).setValue(newUser).addOnCompleteListener(dbTask -> {
+                    btnRegister.setEnabled(true);
+                    if (dbTask.isSuccessful()) finish();
                 });
-    }
-
-    private void clearFields() {
-        etEmail.setText("");
-        etPassword.setText("");
-        etConfirmPassword.setText("");
-        etName.setText("");
-        etPhone.setText("");
-        clearCheckboxes();
-        switchUserType.setChecked(false);
+            } else {
+                btnRegister.setEnabled(true);
+                tvMessage.setText("Auth error: " + task.getException().getMessage());
+            }
+        });
     }
 
     private void clearCheckboxes() {
@@ -244,29 +190,5 @@ public class RegisterActivity extends AppCompatActivity {
         cbSmallFixes.setChecked(false);
         cbCleaning.setChecked(false);
         cbTransferring.setChecked(false);
-    }
-
-    private boolean isValidIsraeliPhone(String phone) {
-        // Remove all spaces, dashes, and other non-digit characters
-        String cleanPhone = phone.replaceAll("[^0-9]", "");
-
-        // Israeli phone numbers can be:
-        // Remove +972 or 972 prefix if exists
-        if (cleanPhone.startsWith("972")) {
-            cleanPhone = "0" + cleanPhone.substring(3);
-        }
-
-        // Check if it's a valid Israeli number
-        if (cleanPhone.length() == 10 && cleanPhone.startsWith("05")) {
-            // Valid mobile number (05X-XXXXXXX)
-            return true;
-        } else if (cleanPhone.length() == 9 && cleanPhone.startsWith("0")) {
-            // Valid landline (0X-XXXXXXX where X is 2,3,4,8,9)
-            char secondDigit = cleanPhone.charAt(1);
-            return secondDigit == '2' || secondDigit == '3' || secondDigit == '4' ||
-                    secondDigit == '8' || secondDigit == '9';
-        }
-
-        return false;
     }
 }

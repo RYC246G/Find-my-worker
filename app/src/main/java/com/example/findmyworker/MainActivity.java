@@ -22,8 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.color.DynamicColors;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseNetworkException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
@@ -36,8 +37,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText eTEmail;
-    private EditText eTPass;
+    private TextInputEditText eTEmail;
+    private TextInputEditText eTPass;
     private TextView tVMsg;
     private AlertDialog pd;
     private Button btnLoginUser;
@@ -68,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // Apply dynamic colors before super.onCreate()
+        DynamicColors.applyToActivitiesIfAvailable(this.getApplication());
+        
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
