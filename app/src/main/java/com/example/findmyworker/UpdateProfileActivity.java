@@ -51,7 +51,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         setupListeners();
 
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), getString(R.string.MAPS_API_KEY));
+            Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         }
     }
 

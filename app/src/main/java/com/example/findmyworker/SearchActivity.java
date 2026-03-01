@@ -311,8 +311,8 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private String makeGeminiRequest(String promptText) {
-        // TODO: PASTE YOUR ACTUAL API KEY HERE
-        String apiKey = "AIzaSyAPwWUu5vKI0Zr_TrlH8gxdnJYRJzrRWdo";
+        //API key
+        String apiKey = BuildConfig.GEMINI_API_KEY;
 
         // UPDATED: Pointing to the official 'v1' production API using the standard 'gemini-1.5-flash' model
         String endpoint = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=" + apiKey;

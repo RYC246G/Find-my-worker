@@ -77,7 +77,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initializePlacesSDK() {
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), getString(R.string.MAPS_API_KEY));
+            Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         }
     }
 

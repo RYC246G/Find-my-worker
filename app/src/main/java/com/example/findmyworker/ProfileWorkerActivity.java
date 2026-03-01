@@ -186,9 +186,10 @@ public class ProfileWorkerActivity extends AppCompatActivity {
         });
     }
 
+    // --- UPDATED: Using BuildConfig to hide the Maps API Key ---
     private void initializePlacesSDK() {
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), getString(R.string.MAPS_API_KEY));
+            Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
         }
     }
 

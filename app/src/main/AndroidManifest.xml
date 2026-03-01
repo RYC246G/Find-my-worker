@@ -2,11 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- These permissions are required to access the device's location. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
 
     <application
         android:allowBackup="true"
@@ -17,17 +15,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBvk67PX1bDQ6kJNJb78oA3Hdhp7o8uYXQ" />
-
+            android:value="${MAPS_API_KEY}" />
 
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,7 +33,6 @@
         <activity android:name=".ProfileClientActivity"/>
         <activity android:name=".UpdateProfileActivity"/>
         <activity android:name=".SearchActivity"/>
-
 
         <provider
             android:name="androidx.core.content.FileProvider"
